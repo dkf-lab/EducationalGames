@@ -1,0 +1,7 @@
+name: EducationalGames
+version: '${project.version}'
+main: me.dkflab.educationalgames.EducationalGames
+api-version: 1.18
+commands:
+  education:
+    description: Main command
