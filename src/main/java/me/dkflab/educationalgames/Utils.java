@@ -110,12 +110,12 @@ public class Utils {
     }
 
     public static String randomItemFromList(List<String> list) {
-        Random rand = new Random();
+        Random rand = new Random(System.currentTimeMillis());
         return list.get(rand.nextInt(list.size()));
     }
 
     public static int randInt(int min, int max) {
-        Random rand = new Random();
+        Random rand = new Random(System.currentTimeMillis());
         return rand.nextInt((max - min) + 1) + min;
     }
 }

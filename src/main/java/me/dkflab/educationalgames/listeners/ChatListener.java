@@ -17,8 +17,12 @@ public class ChatListener implements Listener {
     @EventHandler
     public void chat(PlayerChatEvent e) {
         if (main.isPlayerInMaths(e.getPlayer())) {
-            // Check if message is an integer
             e.setCancelled(true);
+            if (e.getMessage().equalsIgnoreCase("leave")) {
+                main.getCommand().removePlayerFromGame(e.getPlayer());
+                return;
+            }
+            // Check if message is an integer
             Bukkit.getLogger().info(e.getMessage());
             if (Utils.parseInt(e.getPlayer(), e.getMessage())) {
                 main.getCommand().checkMathsAnswer(e.getPlayer(), Integer.parseInt(e.getMessage()));
@@ -27,6 +31,10 @@ public class ChatListener implements Listener {
 
         if (main.isPlayerInEnglish(e.getPlayer())) {
             e.setCancelled(true);
+            if (e.getMessage().equalsIgnoreCase("leave")) {
+                main.getCommand().removePlayerFromGame(e.getPlayer());
+                return;
+            }
             // Send message
             main.getCommand().checkEnglishAnswer(e.getPlayer(), e.getMessage());
         }

@@ -34,14 +34,19 @@ public class MainCommand implements CommandExecutor {
                 error(sender, "Invalid usage.");
                 return true;
             }
-            if (main.isPlayerInMaths(p)||main.isPlayerInEnglish(p)) {
-                error(sender, "You are still in game!");
+            if (main.isPlayerInMaths(p)||main.isPlayerInEnglish(p)||args[0].equalsIgnoreCase("leave")) {
+                removePlayerFromGame(p);
+                if (args[0].equalsIgnoreCase("leave")) {
+                    success(p, "Left the game.");
+                }
                 return true;
             }
             if (args[0].equalsIgnoreCase("math")) {
+                broadcastInstructions(p);
                 math(p);
             }
             if (args[0].equalsIgnoreCase("english")) {
+                broadcastInstructions(p);
                 english(p);
             }
             if (args[0].equalsIgnoreCase("science")) {
@@ -49,6 +54,28 @@ public class MainCommand implements CommandExecutor {
             }
         }
         return true;
+    }
+
+
+    private void broadcastInstructions(Player p) {
+        for (int i = 0; i < 10; i++) {
+            sendMessage(p, "");
+        }
+        sendMessage(p, "&c&lEducational Instructions");
+        sendMessage(p, "&7Press 't' to open chat and type");
+        sendMessage(p, "&7your answer.");
+        sendMessage(p, "");
+        sendMessage(p, "&7Leave the game at any time by running");
+        sendMessage(p, "&c/education leave &7or typing");
+        sendMessage(p, "&cleave &7in chat.");
+    }
+    public void removePlayerFromGame(Player p) {
+        mathsAnswers.put(p, null);
+        count.put(p, null);
+        main.removePlayerFromEnglish(p);
+        main.removePlayerFromMaths(p);
+        removePotionEffects(p);
+        p.sendTitle("","",0,1,0);
     }
 
     private HashMap<Player, Integer> mathsAnswers = new HashMap<>();
@@ -119,7 +146,7 @@ public class MainCommand implements CommandExecutor {
                 break;
         }
         // Send title
-        p.sendTitle(color("&e" + one + " " + symbol + " " + two),color("&7Type your answer in chat."), 0, 1000, 0);
+        p.sendTitle(color("&e" + one + " " + symbol + " " + two),color("&7Type your answer in chat."), 0, Integer.MAX_VALUE, 0);
     }
 
     public void english(Player p) {
@@ -158,7 +185,7 @@ public class MainCommand implements CommandExecutor {
         }
         String answer = randomItemFromList(words);
         englishAnswers.put(p, answer);
-        p.sendTitle(color("&e" + shuffleString(answer)), color("&7Unscramble and type your answer in chat."), 0, 1000, 0);
+        p.sendTitle(color("&e" + shuffleString(answer)), color("&7Unscramble and type your answer in chat."), 0, Integer.MAX_VALUE, 0);
     }
 
     private HashMap<Player, String> englishAnswers = new HashMap<>();
